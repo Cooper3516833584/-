@@ -10,6 +10,10 @@
 output/*
 !output/.gitkeep
 
+# Local project notes not published to GitHub
+README.md
+docs/
+
 # Python bytecode and caches
 __pycache__/
 *.py[cod]

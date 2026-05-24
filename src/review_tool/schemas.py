@@ -21,9 +21,9 @@ ArticleType = Literal[
 
 RiskLevel = Literal["high", "medium", "low", "info"]
 Confidence = Literal["high", "medium", "low"]
-AgentKind = Literal["selector", "reviewer", "arbitrator", "rewriter"]
+AgentKind = Literal["selector", "reviewer", "persona", "arbitrator", "rewriter"]
 AgentStatus = Literal["success", "failed", "skipped", "timeout", "invalid_output"]
-SourceType = Literal["article", "cases", "rules", "style_guides", "risky_phrases", "examples"]
+SourceType = Literal["article", "rules"]
 BucketName = Literal["must_fix", "should_fix", "optional", "reference"]
 
 
@@ -37,6 +37,7 @@ class ArticleInput(BaseModel):
     author: str | None = None
     column: str | None = None
     article_type: ArticleType = "unknown"
+    event_background: str | None = None
     images: list[str] = Field(default_factory=list)
     source_path: str | None = None
     metadata: dict = Field(default_factory=dict)
@@ -76,7 +77,6 @@ class AgentConfig(BaseModel):
     priority: int = 50
     applies_to: AppliesTo = Field(default_factory=AppliesTo)
     capabilities: list[str] = Field(default_factory=list)
-    knowledge_sources: list[str] = Field(default_factory=list)
     max_findings: int = 8
     model: ModelConfig = Field(default_factory=ModelConfig)
     output_schema: str = "AgentResult"
@@ -133,9 +133,6 @@ class SelectorInput(BaseModel):
     article: ArticleInput
     segments: list[ArticleSegment]
     agent_catalog: list[dict]
-    available_knowledge_sources: list[str] = Field(
-        default_factory=lambda: ["cases", "rules", "style_guides", "risky_phrases", "examples"]
-    )
     deterministic_hints: dict = Field(default_factory=dict)
 
 

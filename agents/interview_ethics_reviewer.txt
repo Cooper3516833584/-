@@ -1,27 +1,21 @@
 ---
+# Agent 唯一标识，不能和其他 Agent 重复。
 agent_id: interview_ethics_reviewer
+# 报告、日志和配置校验中显示的名称。
 name: 采访伦理审查员
+# 是否启用；false 表示不会被 Selector 选择或执行。
 enabled: true
+# Agent 类型；reviewer 表示普通审稿 Agent。
 kind: reviewer
+# 优先级；数字越大越优先展示给 Selector。
 priority: 70
-applies_to:
-  article_types: [interview, news, unknown]
-  columns: ["*"]
+# 能力标签，帮助 Selector 判断这个 Agent 适合审什么。
 capabilities:
   - interview_ethics
   - quote_integrity
   - authorization
-knowledge_sources:
-  - rules
-  - cases
-  - risky_phrases
+# 单次最多输出的审稿意见数量。
 max_findings: 8
-model:
-  name: default
-  temperature: 0.2
-  timeout_seconds: 90
-  max_retries: 2
-output_schema: AgentResult
 ---
 
 # Role

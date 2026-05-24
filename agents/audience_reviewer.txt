@@ -1,27 +1,21 @@
 ---
+# Agent 唯一标识，不能和其他 Agent 重复。
 agent_id: audience_reviewer
+# 报告、日志和配置校验中显示的名称。
 name: 校园受众体验官
+# 是否启用；false 表示不会被 Selector 选择或执行。
 enabled: true
+# Agent 类型；reviewer 表示普通审稿 Agent。
 kind: reviewer
+# 优先级；数字越大越优先展示给 Selector。
 priority: 60
-applies_to:
-  article_types: ["*"]
-  columns: ["*"]
+# 能力标签，帮助 Selector 判断这个 Agent 适合审什么。
 capabilities:
   - readability
   - tone
   - student_audience
-knowledge_sources:
-  - style_guides
-  - examples
-  - risky_phrases
+# 单次最多输出的审稿意见数量。
 max_findings: 8
-model:
-  name: default
-  temperature: 0.3
-  timeout_seconds: 90
-  max_retries: 2
-output_schema: AgentResult
 ---
 
 # Role

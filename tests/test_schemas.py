@@ -21,10 +21,12 @@ def test_article_input_full():
         author="作者",
         column="校园生活",
         article_type="news",
+        event_background="活动发生在迎新周。",
         images=["a.jpg"],
     )
     assert a.title == "测试标题"
     assert a.article_type == "news"
+    assert a.event_background == "活动发生在迎新周。"
 
 
 def test_article_segment():

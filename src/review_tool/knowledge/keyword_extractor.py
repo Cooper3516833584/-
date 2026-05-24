@@ -13,8 +13,10 @@ def build_retrieval_query(
 
     合并稿件标题、摘要、Selector 查询和建议标签。
     """
-    # 稿件前 300 字作为摘要
-    summary = article.body[:300]
+    # 稿件背景和前 300 字正文共同作为摘要线索。
+    summary = " ".join(
+        part for part in [article.event_background or "", article.body[:300]] if part
+    )
 
     parts = [article.title, summary]
     parts.extend(selector_result.context_queries)
@@ -31,5 +33,5 @@ def build_retrieval_query(
     return RetrievalQuery(
         query_text=query_text,
         tags=tags,
-        preferred_sources=["cases", "rules", "risky_phrases", "style_guides", "examples"],
+        preferred_sources=["rules"],
     )

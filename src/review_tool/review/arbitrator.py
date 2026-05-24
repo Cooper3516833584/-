@@ -12,8 +12,7 @@ def assign_bucket(score: float, finding: Finding) -> str:
     - risk_level=high 且 confidence=medium/high → 至少 should_fix
     - 隐私授权问题且 medium/high → 至少 should_fix
     - 事实错误且 confidence=high → 至少 should_fix
-    - 只有 style_guides/examples 的风格建议 → 不能进入 must_fix
-    - confidence=low 且无 rules/cases → 不能进入 must_fix
+    - confidence=low 且无 rules 依据 → 不能进入 must_fix
     - format 且 risk_level 非 high → 不能进入 must_fix
     """
     # 先用分数分层
@@ -44,12 +43,8 @@ def assign_bucket(score: float, finding: Finding) -> str:
 
     # 向下调整
     evidence_types = {e.source_type for e in finding.evidence}
-    style_only = evidence_types.issubset({"style_guides", "examples", "article"})
-    if style_only and bucket == "must_fix":
-        bucket = "should_fix"
-
     if finding.confidence == "low":
-        has_strong = evidence_types & {"rules", "cases"}
+        has_strong = "rules" in evidence_types
         if not has_strong and bucket == "must_fix":
             bucket = "should_fix"
 

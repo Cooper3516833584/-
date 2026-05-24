@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>智能审稿</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>智能审稿</h1>
+        <p id="statusText">本地工作台</p>
+      </div>
+      <nav class="tabs" aria-label="主导航">
+        <button class="tab is-active" data-tab="review">审稿</button>
+        <button class="tab" data-tab="agents">Agent</button>
+        <button class="tab" data-tab="settings">设置</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="review" class="panel is-active">
+        <form id="reviewForm" class="layout review-layout">
+          <section class="editor">
+            <label>
+              标题
+              <input id="titleInput" name="title" type="text" placeholder="稿件标题" required />
+            </label>
+
+            <label>
+              事件背景
+              <textarea id="backgroundInput" name="event_background" rows="4" placeholder="可选"></textarea>
+            </label>
+
+            <label>
+              稿件
+              <textarea id="bodyInput" name="body" rows="18" placeholder="输入正文"></textarea>
+            </label>
+          </section>
+
+          <aside class="side">
+            <fieldset class="segmented">
+              <legend>Agent 选择</legend>
+              <label><input type="radio" name="mode" value="auto" checked /> 自动选择</label>
+              <label><input type="radio" name="mode" value="manual" /> 手动选择</label>
+            </fieldset>
+
+            <div id="manualAgents" class="agent-picker" hidden></div>
+
+            <button class="primary" id="reviewButton" type="submit">开始审稿</button>
+            <div id="reviewResult" class="result"></div>
+          </aside>
+        </form>
+      </section>
+
+      <section id="agents" class="panel">
+        <div class="toolbar">
+          <h2>已有 Agent</h2>
+          <button id="newAgentButton" type="button">新建 Agent</button>
+        </div>
+        <div id="agentList" class="agent-list"></div>
+
+        <form id="agentForm" class="agent-form" hidden>
+          <h2>新建 Agent</h2>
+          <div class="field-grid two">
+            <label>
+              Agent ID
+              <input name="agent_id" required placeholder="custom_reviewer" />
+            </label>
+            <label>
+              中文名
+              <input name="name" required placeholder="自定义审稿员" />
+            </label>
+            <label>
+              Agent 类型
+              <select id="agentKindSelect" name="kind">
+                <option value="reviewer">规则审查 Agent</option>
+                <option value="persona">立场模拟 Agent</option>
+              </select>
+            </label>
+            <label>
+              优先级
+              <input name="priority" type="number" value="50" />
+            </label>
+            <label>
+              最多意见数
+              <input name="max_findings" type="number" value="8" />
+            </label>
+          </div>
+
+          <section class="tag-section" aria-labelledby="capabilityTitle">
+            <div class="tag-title" id="capabilityTitle">能力标签</div>
+            <div id="capabilityTags" class="tag-bank"></div>
+            <div class="inline-add">
+              <input id="newCapabilityInput" type="text" placeholder="输入新标签，例如 fact" />
+              <button id="addCapabilityButton" type="button">新增标签</button>
+            </div>
+          </section>
+
+          <section id="personaFields" class="persona-fields" hidden>
+            <label>
+              模拟思路 / 立场设定
+              <textarea
+                id="personaMindsetInput"
+                name="persona_mindset"
+                rows="6"
+                placeholder="例如：你不关心这件事，只是偶然刷到这篇报道；你对所有媒体报道都持怀疑态度，会优先找漏洞和没说清楚的地方。"
+              ></textarea>
+            </label>
+          </section>
+
+          <label>
+            审稿关注点 / 观察重点
+            <textarea name="review_focus" rows="7" placeholder="每行一个关注点。立场模拟 Agent 可留空，系统会按上面的模拟思路生成默认观察重点。"></textarea>
+          </label>
+          <label class="check-row"><input name="enabled" type="checkbox" checked /> 启用</label>
+          <div class="actions">
+            <button class="primary" type="submit">保存生效</button>
+            <button id="cancelAgentButton" type="button">取消</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="settings" class="panel">
+        <form id="settingsForm" class="settings-form">
+          <h2>.env 设置</h2>
+          <div class="field-grid two">
+            <label><span>模型供应商（LLM_PROVIDER）</span><input name="LLM_PROVIDER" /></label>
+            <label><span>模型名称（OPENAI_MODEL）</span><input name="OPENAI_MODEL" /></label>
+            <label><span>API 地址（OPENAI_BASE_URL）</span><input name="OPENAI_BASE_URL" /></label>
+            <label><span>API 密钥（OPENAI_API_KEY）</span><input name="OPENAI_API_KEY" type="password" autocomplete="off" /></label>
+            <label><span>Mock 模式（MOCK_MODE）</span><select name="MOCK_MODE"><option value="false">否</option><option value="true">是</option></select></label>
+            <label><span>调试模式（DEBUG）</span><select name="DEBUG"><option value="false">否</option><option value="true">是</option></select></label>
+            <label><span>默认模型别名（DEFAULT_MODEL_NAME）</span><input name="DEFAULT_MODEL_NAME" /></label>
+            <label><span>默认温度（DEFAULT_TEMPERATURE）</span><input name="DEFAULT_TEMPERATURE" type="number" step="0.1" min="0" max="2" /></label>
+            <label><span>默认超时秒数（DEFAULT_TIMEOUT_SECONDS）</span><input name="DEFAULT_TIMEOUT_SECONDS" type="number" min="1" /></label>
+            <label><span>默认重试次数（DEFAULT_MAX_RETRIES）</span><input name="DEFAULT_MAX_RETRIES" type="number" min="0" /></label>
+            <label><span>审稿输出结构（REVIEWER_OUTPUT_SCHEMA）</span><input name="REVIEWER_OUTPUT_SCHEMA" /></label>
+            <label><span>选择器输出结构（SELECTOR_OUTPUT_SCHEMA）</span><input name="SELECTOR_OUTPUT_SCHEMA" /></label>
+            <label><span>始终加入基础 Agent（ALWAYS_INCLUDE_BASE_AGENTS）</span><select name="ALWAYS_INCLUDE_BASE_AGENTS"><option value="true">是</option><option value="false">否</option></select></label>
+            <label><span>最大选择 Agent 数（MAX_SELECTED_AGENTS）</span><input name="MAX_SELECTED_AGENTS" type="number" min="1" /></label>
+            <label><span>检索条数（RETRIEVAL_TOP_K）</span><input name="RETRIEVAL_TOP_K" type="number" min="1" /></label>
+            <label><span>最大并发数（MAX_CONCURRENCY）</span><input name="MAX_CONCURRENCY" type="number" min="1" /></label>
+            <label><span>Agent 总超时秒数（AGENT_TIMEOUT_SECONDS）</span><input name="AGENT_TIMEOUT_SECONDS" type="number" min="1" /></label>
+          </div>
+          <label>
+            <span>基础 Agent ID（BASE_AGENT_IDS）</span>
+            <input name="BASE_AGENT_IDS" />
+          </label>
+          <button class="primary" type="submit">保存设置</button>
+          <div id="settingsResult" class="result"></div>
+        </form>
+      </section>
+    </main>
+
+    <dialog id="settingsUnsavedDialog" class="modal">
+      <section class="modal-card" aria-labelledby="settingsUnsavedTitle">
+        <h2 id="settingsUnsavedTitle">设置尚未保存</h2>
+        <p>离开设置页面前，是否保存这些修改？</p>
+        <div class="actions modal-actions">
+          <button class="primary" type="button" data-action="save">保存</button>
+          <button type="button" data-action="discard">不保存</button>
+          <button type="button" data-action="cancel">取消</button>
+        </div>
+      </section>
+    </dialog>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

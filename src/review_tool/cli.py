@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.table import Table
 
 from .config import load_settings
-from .engine import ReviewEngine
+from .engine import ReviewEngine, build_review_output_paths
 from .loaders.agent_loader import load_agent_configs
 from .loaders.corpus_loader import load_corpus
 from .knowledge.chunker import chunk_documents
@@ -22,6 +22,7 @@ from .review.routing import (
 from .llm.base import LLMClient
 from .llm.mock_client import MockLLMClient
 from .llm.openai_client import OpenAIClient
+from .web_app import run_web_server
 
 app = typer.Typer(name="review-tool", help="高校学生媒体单次智能审稿工具")
 console = Console()
@@ -68,7 +69,8 @@ def review(
         console.print()
         console.print("[bold green]审稿完成。[/bold green]")
         console.print(f"run_id: {result.run_id}")
-        console.print(f"报告: {output.resolve() / result.run_id / 'report.md'}")
+        _, report_docx_path, _ = build_review_output_paths(result.article, output, result.run_id)
+        console.print(f"报告: {report_docx_path}")
         console.print(f"必须修改: [bold red]{must_fix}[/bold red]")
         console.print(f"建议修改: [bold yellow]{should_fix}[/bold yellow]")
 
@@ -178,7 +180,7 @@ def validate_config(
         console.print(f"  - {c.agent_id:30s} {c.name:20s} [{status}] {c.kind}")
 
     # 检查知识库目录
-    for dir_name in ["cases", "rules", "style_guides", "risky_phrases", "examples"]:
+    for dir_name in ["rules"]:
         d = project_root / dir_name
         if d.exists():
             txt_count = len(list(d.glob("*.txt")))
@@ -249,6 +251,19 @@ def show_agents(
         table.add_row(c.agent_id, c.name, status, c.kind, str(c.priority))
 
     console.print(table)
+
+
+@app.command()
+def web(
+    project_root: Path = typer.Option(Path("."), "--project-root", "-r", help="项目根目录"),
+    host: str = typer.Option("127.0.0.1", "--host", help="监听地址"),
+    port: int = typer.Option(8765, "--port", "-p", help="监听端口"),
+):
+    """启动本地 Web UI。"""
+    url = f"http://{host}:{port}"
+    console.print(f"[green]Web UI 已启动：[/green]{url}")
+    console.print("[dim]按 Ctrl+C 停止服务。[/dim]")
+    run_web_server(project_root=project_root, host=host, port=port)
 
 
 def main():

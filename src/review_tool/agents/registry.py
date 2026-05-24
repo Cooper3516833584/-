@@ -32,6 +32,13 @@ class AgentRegistry:
             if c.enabled and c.kind == "reviewer"
         ]
 
+    def list_enabled_review_agents(self) -> list[AgentConfig]:
+        """列出所有可执行的审稿类 Agent，包括规则审查和立场画像模拟。"""
+        return [
+            c for c in self._configs.values()
+            if c.enabled and c.kind in {"reviewer", "persona"}
+        ]
+
     def get_selector(self) -> AgentConfig:
         """获取 Selector Agent 配置。"""
         if self._selector is None:
@@ -41,7 +48,7 @@ class AgentRegistry:
     def build_catalog_for_selector(self) -> list[dict]:
         """为 Selector Agent 构建轻量 Agent 目录。
 
-        只返回 agent_id, name, priority, capabilities, applies_to, knowledge_sources。
+        只返回 agent_id, name, kind, priority, capabilities 和必要画像元信息。
         不返回 prompt_body。
         """
         catalog = []
@@ -53,13 +60,10 @@ class AgentRegistry:
             catalog.append({
                 "agent_id": c.agent_id,
                 "name": c.name,
+                "kind": c.kind,
                 "priority": c.priority,
                 "capabilities": c.capabilities,
-                "applies_to": {
-                    "article_types": c.applies_to.article_types,
-                    "columns": c.applies_to.columns,
-                },
-                "knowledge_sources": c.knowledge_sources,
+                "persona_profile": c.metadata.get("persona_profile", {}),
             })
         return catalog
 

@@ -11,6 +11,7 @@ from review_tool.review.routing import (
     fallback_select_agents,
     finalize_selected_agents,
 )
+from review_tool.agents.selector import _coerce_selector_shorthand
 
 
 def _make_registry(agent_ids: list[str] | None = None) -> AgentRegistry:
@@ -131,3 +132,36 @@ def test_finalize_selected_agents_fallback_when_empty():
     # empty SelectorResult with always_include_base_agents=False triggers fallback
     # fallback checks base_agent_ids which are in the registry
     assert len(selected) > 0
+
+
+def test_selector_shorthand_agent_ids_are_converted():
+    registry = _make_registry()
+    result = SelectorResult()
+
+    converted = _coerce_selector_shorthand(
+        result,
+        '{"agent_ids": ["risk_reviewer", "fact_checker"]}',
+        registry,
+    )
+
+    assert [item.agent_id for item in converted.selected_agents] == [
+        "risk_reviewer",
+        "fact_checker",
+    ]
+    assert converted.selected_agents[0].priority == 90
+    assert converted.reasoning_summary
+
+
+def test_selector_shorthand_dict_agents_are_converted():
+    registry = _make_registry()
+    result = SelectorResult()
+
+    converted = _coerce_selector_shorthand(
+        result,
+        '{"agents": [{"agent_id": "privacy_reviewer", "reason": "授权检查", "priority": 85}]}',
+        registry,
+    )
+
+    assert len(converted.selected_agents) == 1
+    assert converted.selected_agents[0].agent_id == "privacy_reviewer"
+    assert converted.selected_agents[0].reason == "授权检查"

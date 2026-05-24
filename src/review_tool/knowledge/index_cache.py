@@ -7,9 +7,9 @@ from ..schemas import KnowledgeChunk
 
 
 def _compute_dir_hash(root: Path) -> str:
-    """计算知识库目录下所有 txt 文件的综合哈希。"""
+    """计算 rules/ 下所有 txt 文件的综合哈希。"""
     hasher = hashlib.sha1()
-    source_dirs = ["cases", "rules", "style_guides", "risky_phrases", "examples"]
+    source_dirs = ["rules"]
     for dir_name in source_dirs:
         sd = root / dir_name
         if not sd.exists():

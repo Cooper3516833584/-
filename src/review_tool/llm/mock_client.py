@@ -50,6 +50,9 @@ def _generate_mock_response(system: str, user: str) -> str:
     if "audience" in combined:
         return _mock_findings("audience_reviewer", "校园受众体验官", "medium", "语气偏官腔")
 
+    if "立场画像模拟" in combined or "persona_response" in combined:
+        return _mock_findings("persona_reader", "立场模拟读者", "medium", "读者可能产生负面解读")
+
     # 默认返回空 findings
     return _mock_empty_result()
 

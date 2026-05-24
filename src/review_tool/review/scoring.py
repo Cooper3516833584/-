@@ -35,10 +35,6 @@ def score_finding(f: Finding, source_agent_count: int = 1) -> float:
         score += 5
     if "rules" in source_types:
         score += 10
-    if "cases" in source_types:
-        score += 8
-    if "risky_phrases" in source_types:
-        score += 5
 
     # 多 Agent 命中加分
     score += min(max(source_agent_count - 1, 0) * 6, 18)

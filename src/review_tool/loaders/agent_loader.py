@@ -41,23 +41,26 @@ def load_agent_configs(agent_dir: Path) -> list[AgentConfig]:
 
         agent_ids.add(agent_id)
 
+        kind = str(metadata.get("kind", "reviewer"))
+        output_schema = str(
+            metadata.get("output_schema", "SelectorResult" if kind == "selector" else "AgentResult")
+        )
+
         config = AgentConfig(
             agent_id=agent_id,
             name=str(metadata.get("name", agent_id)),
             enabled=bool(metadata.get("enabled", True)),
-            kind=str(metadata.get("kind", "reviewer")),
+            kind=kind,
             priority=int(metadata.get("priority", 50)),
             applies_to=metadata.get("applies_to", {}),
             capabilities=metadata.get("capabilities", []),
-            knowledge_sources=metadata.get("knowledge_sources", []),
             max_findings=int(metadata.get("max_findings", 8)),
             model=metadata.get("model", {}),
-            output_schema=str(metadata.get("output_schema", "AgentResult")),
+            output_schema=output_schema,
             prompt_body=prompt_body,
             metadata={k: v for k, v in metadata.items() if k not in {
                 "agent_id", "name", "enabled", "kind", "priority",
-                "applies_to", "capabilities", "knowledge_sources",
-                "max_findings", "model", "output_schema",
+                "applies_to", "capabilities", "max_findings", "model", "output_schema",
             }},
         )
 

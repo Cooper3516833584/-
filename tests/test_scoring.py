@@ -23,7 +23,7 @@ def _make_finding(risk="medium", conf="medium", tags=None, evidence=None):
 
 def test_score_rules_evidence_higher():
     f1 = _make_finding(evidence=[EvidenceRef(source_type="rules", quote="规则引用")])
-    f2 = _make_finding(evidence=[EvidenceRef(source_type="examples", quote="范例引用")])
+    f2 = _make_finding(evidence=[EvidenceRef(source_type="article", quote="原文引用")])
     assert score_finding(f1, 1) > score_finding(f2, 1)
 
 

@@ -1,22 +1,17 @@
-"""知识库语料加载器：从 cases/rules/style_guides/risky_phrases/examples 加载 txt。"""
+"""知识库语料加载器：只从 rules/ 加载 txt 规则文件。"""
 
 from pathlib import Path
 from ..schemas import KnowledgeDocument
 from ..loaders.frontmatter import load_txt_with_frontmatter
 
 SOURCE_DIRS: dict[str, str] = {
-    "cases": "cases",
     "rules": "rules",
-    "style_guides": "style_guides",
-    "risky_phrases": "risky_phrases",
-    "examples": "examples",
 }
 
 
 def infer_doc_id(metadata: dict, path: Path) -> str:
     """从 metadata 或文件名推断 doc_id。"""
-    for key in ["doc_id", "case_id", "rule_id", "style_id",
-                "phrase_list_id", "example_id", "id"]:
+    for key in ["rule_id", "doc_id", "id"]:
         if metadata.get(key):
             return str(metadata[key])
     return path.stem

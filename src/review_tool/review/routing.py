@@ -7,7 +7,7 @@ from ..schemas import (
 from ..agents.registry import AgentRegistry
 from ..config import ReviewSettings
 
-# 高风险关键词列表（从 risky_phrases 扫描或内置）
+# 高风险关键词列表（内置确定性提示）
 _SENSITIVE_PATTERNS = [
     "震惊", "曝光", "怒了", "所有人都", "必须看", "不看后悔",
     "彻底炸了", "投诉", "处分", "开除", "举报",
@@ -26,7 +26,7 @@ def build_deterministic_hints(
     segments: list[ArticleSegment],
 ) -> dict:
     """从稿件中提取确定性提示，辅助 Selector 判断。"""
-    full_text = article.title + "\n" + article.body
+    full_text = article.title + "\n" + (article.event_background or "") + "\n" + article.body
 
     sensitive_found = [kw for kw in _SENSITIVE_PATTERNS if kw in full_text]
 
@@ -64,7 +64,7 @@ def validate_selector_result(
 
     校验规则：
     1. agent_id 必须存在且非 selector。
-    2. Agent 必须 enabled 且 kind 为 reviewer。
+    2. Agent 必须 enabled 且 kind 为 reviewer/persona。
     3. applies_to 必须匹配。
     4. 去重。
     5. 不超过 max_selected_agents。
@@ -93,8 +93,8 @@ def validate_selector_result(
             warnings.append(f"Agent {aid} 已禁用，已跳过")
             continue
 
-        if agent.kind != "reviewer":
-            warnings.append(f"Agent {aid} 的 kind 不是 reviewer，已跳过")
+        if agent.kind not in {"reviewer", "persona"}:
+            warnings.append(f"Agent {aid} 的 kind 不是 reviewer/persona，已跳过")
             continue
 
         if not _check_applies_to(agent, article):

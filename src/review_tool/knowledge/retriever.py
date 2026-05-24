@@ -82,10 +82,6 @@ def _score_chunk(
     # 来源权重加成
     source_weights = {
         "rules": 0.8,
-        "cases": 0.7,
-        "risky_phrases": 0.5,
-        "style_guides": 0.3,
-        "examples": 0.2,
     }
     score += source_weights.get(chunk.source_type, 0.0)
 
@@ -97,9 +93,5 @@ def filter_context_for_agent(
     agent: AgentConfig,
     max_chunks: int = 8,
 ) -> list[KnowledgeChunk]:
-    """根据 Agent 的 knowledge_sources 过滤上下文。"""
-    sources = set(agent.knowledge_sources or [])
-    if not sources:
-        return chunks[:max_chunks]
-    filtered = [c for c in chunks if c.source_type in sources]
-    return filtered[:max_chunks]
+    """返回传给 Agent 的上下文；本地知识库已统一为 rules。"""
+    return chunks[:max_chunks]

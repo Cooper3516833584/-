@@ -1,15 +1,14 @@
 ---
+# Agent 唯一标识，不能和其他 Agent 重复。
 agent_id: selector
+# 报告、日志和配置校验中显示的名称。
 name: Agent选择器
+# 是否启用；Selector 必须保持 true。
 enabled: true
+# Agent 类型；selector 负责判断稿件并选择审稿 Agent。
 kind: selector
+# 优先级；数字越大越靠前加载。
 priority: 100
-model:
-  name: default
-  temperature: 0.1
-  timeout_seconds: 60
-  max_retries: 2
-output_schema: SelectorResult
 ---
 
 # Role

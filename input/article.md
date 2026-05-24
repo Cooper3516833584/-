@@ -3,6 +3,8 @@ title: 莫把下流当风流，莫让恶俗毁雪景
 author: 喻家山下编辑fufu
 column: 山下评
 article_type: commentary
+# 可选：填写事件背景，帮助系统理解稿件发生场景。
+event_background:
 ---
 
 # 莫把下流当风流，莫让恶俗毁雪景

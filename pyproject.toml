@@ -16,6 +16,7 @@ dependencies = [
     "orjson>=3.9",
     "tenacity>=8.0",
     "openai>=1.0",
+    "python-docx>=1.1.0",
 ]
 
 [project.optional-dependencies]
@@ -30,6 +31,9 @@ review-tool = "review_tool.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+review_tool = ["web_static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

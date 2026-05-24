@@ -11,7 +11,8 @@ _IMG_PATTERN = re.compile(r"!\[.*?\]\((.+?)\)")
 def load_article_file(path: Path) -> ArticleInput:
     """从 Markdown 文件加载稿件。
 
-    支持 YAML front matter（title, author, column, article_type, images）。
+    支持 YAML front matter（title, author, column, article_type,
+    event_background, images）。
     """
     if not path.exists():
         raise FileNotFoundError(f"稿件文件不存在: {path}")
@@ -40,6 +41,11 @@ def load_article_file(path: Path) -> ArticleInput:
                 break
 
     article_type = str(metadata.get("article_type", "unknown"))
+    event_background = _optional_str(
+        metadata.get("event_background")
+        or metadata.get("事件背景")
+        or metadata.get("background")
+    )
 
     return ArticleInput(
         title=title,
@@ -47,11 +53,22 @@ def load_article_file(path: Path) -> ArticleInput:
         author=metadata.get("author"),
         column=metadata.get("column"),
         article_type=article_type,  # type: ignore[arg-type]
+        event_background=event_background,
         images=images,
         source_path=str(path.resolve()),
         metadata={k: v for k, v in metadata.items()
-                  if k not in {"title", "author", "column", "article_type", "images"}},
+                  if k not in {
+                      "title", "author", "column", "article_type",
+                      "event_background", "事件背景", "background", "images",
+                  }},
     )
+
+
+def _optional_str(value) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
 
 
 def preprocess_article(article: ArticleInput) -> list[ArticleSegment]:

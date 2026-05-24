@@ -1,0 +1,17 @@
+---
+phrase_list_id: title_risk
+title: 标题高风险表达
+tags:
+  - title
+  - clickbait
+  - misreading
+---
+
+以下表达容易引发误读或标题党观感：
+- 震惊
+- 所有人都
+- 必须看
+- 彻底炸了
+- 不看后悔
+- 曝光
+- 怒了

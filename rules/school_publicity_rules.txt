@@ -1,0 +1,16 @@
+---
+rule_id: school_publicity_rules
+title: 学校宣传内容规范摘要
+rule_type: school_policy
+authority_level: high
+tags:
+  - publicity
+  - school_image
+  - compliance
+---
+
+1. 所有对外发布内容应符合学校宣传口径，不得损害学校声誉。
+2. 涉及学校政策、数据、排名等信息时，必须使用官方最新数据。
+3. 不得在官方媒体平台发布未经审批的敏感话题。
+4. 涉及合作单位、赞助商时，应注意表述的合规性。
+5. 校园媒体报道应传播积极健康的校园文化。

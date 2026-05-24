@@ -1,0 +1,17 @@
+---
+style_id: interview_style
+title: 人物采访稿风格规范
+applies_to:
+  article_types: [interview]
+  columns: ["*"]
+tags:
+  - interview
+  - narrative
+  - quote
+---
+
+采访稿应保持受访者的原话风格，可适当调整口语化表达使其通顺，但不得改变原意。
+
+引语应与正文叙述清晰区分。使用引号或独立段落标示。应标注受访者姓名和身份（如已获授权）。
+
+避免过度美化或丑化受访者。不要添加受访者没有表达的观点。

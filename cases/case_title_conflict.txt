@@ -1,0 +1,25 @@
+---
+case_id: case_title_conflict
+title: 标题措辞引发群体对立投诉
+case_type: public_opinion
+severity: high
+tags:
+  - title
+  - group_conflict
+  - public_opinion
+related_agent_ids:
+  - risk_reviewer
+  - title_reviewer
+---
+
+【事件概述】
+某稿件标题使用了"某某群体不如某某群体"的对比表述，发布后引发两方学生群体在网络上的争论和互相攻击。
+
+【引发问题】
+标题的对比措辞被解读为拉踩，导致评论区失控，最终稿件被删除。
+
+【复盘结论】
+标题应避免将两个群体进行优劣对比，避免制造对立。如需对比，应使用中性客观的表述。
+
+【审稿提醒】
+检查标题是否存在群体对比、拉踩、暗示优劣等风险表达。

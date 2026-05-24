@@ -1,0 +1,18 @@
+---
+phrase_list_id: group_conflict_phrases
+title: 群体对立高风险表达
+tags:
+  - group_conflict
+  - division
+  - comparison
+---
+
+以下表达容易引发群体对立：
+- 不如
+- 完胜
+- 碾压
+- 他们做不到
+- 只有XXX才能
+- XXX就是比XXX强
+- 真正的XXX都
+- 不配

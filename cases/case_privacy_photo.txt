@@ -1,0 +1,24 @@
+---
+case_id: case_privacy_photo
+title: 活动照片未确认授权引发投诉
+case_type: privacy
+severity: high
+tags:
+  - privacy
+  - photo
+  - authorization
+related_agent_ids:
+  - privacy_reviewer
+---
+
+【事件概述】
+某活动报道使用了可清晰识别学生个人身份的近景照片，发布后当事人认为未经许可，要求删除。
+
+【引发问题】
+当事人认为照片发布缺少授权确认，且照片场景与表情不适合公开传播。
+
+【复盘结论】
+涉及可识别个人形象的图片，应确认授权或选择远景、背影、模糊处理等方式。
+
+【审稿提醒】
+检查稿件中是否出现照片、截图、姓名、班级、宿舍等可识别个人信息。

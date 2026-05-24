@@ -1,0 +1,17 @@
+---
+rule_id: student_media_review_rules
+title: 学生媒体审稿基本规范
+rule_type: internal_rule
+authority_level: medium
+tags:
+  - review
+  - privacy
+  - factuality
+---
+
+1. 稿件中涉及具体个人、组织、活动方时，应保证事实准确、表述克制。
+2. 涉及采访引语时，应避免断章取义。
+3. 涉及个人信息、照片、聊天记录时，应确认授权或做必要匿名处理。
+4. 标题、封面、摘要不得夸大事实，不得制造群体对立。
+5. 不得在稿件中泄露未公开的学校内部信息。
+6. 涉及争议性话题时，应呈现多方观点，避免单一立场。
